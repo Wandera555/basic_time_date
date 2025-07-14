@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Clock - Local Time</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f6f8fa;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .clock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .clock-time {
+      font-size: 2em;
+      color: #22223b;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .clock-date {
+      font-size: 1em;
+      color: #4a4e69;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <div class="clock-time" id="clock-time"></div>
+    <div class="clock-date" id="clock-date"></div>
+  </div>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      // Use local computer time
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateStr = now.toLocaleDateString([], { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('clock-time').textContent = timeStr;
+      document.getElementById('clock-date').textContent = dateStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
