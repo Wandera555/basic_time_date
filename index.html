@@ -2,52 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Live Clock - Local Time</title>
+  <title>Compact Full Clock</title>
   <style>
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f6f8fa;
       margin: 0;
       padding: 0;
-    }
-    .clock-container {
+      font-family: sans-serif;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0;
-      padding: 0;
-      min-width: 100px;
-      min-height: 5px;
-      background: #f6f8fa;
+      height: 100vh; /* Ensures full centering */
     }
-    .clock-text {
-      font-size: 1.0em;
-      color: #22223b;
-      letter-spacing: 0.5px;
+    .clock {
+      font-size: 0.8em;
+      color: #222;
       white-space: nowrap;
-      padding: 4px 8px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       background: #fff;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
   </style>
 </head>
 <body>
-  <div class="clock-container">
-    <span class="clock-text" id="clock-text"></span>
-  </div>
+  <span class="clock" id="clock"></span>
   <script>
     function getOrdinal(day) {
       if (day > 3 && day < 21) return "th";
       switch (day % 10) {
-        case 1: return "st";
-        case 2: return "nd";
-        case 3: return "rd";
+        case 1: return "st"; case 2: return "nd"; case 3: return "rd";
         default: return "th";
       }
     }
-
     function updateClock() {
       const now = new Date();
       const weekdays = ["Sunday,", "Monday,", "Tuesday,", "Wednesday,", "Thursday,", "Friday,", "Saturday,"];
@@ -55,27 +43,16 @@
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
-
-      const weekday = weekdays[now.getDay()];
-      const month = months[now.getMonth()];
+      let h = now.getHours(), m = now.getMinutes(), ampm = h >= 12 ? "pm" : "am";
+      h = h % 12; h = h ? h : 12;
+      m = m < 10 ? "0" + m : m;
       const day = now.getDate();
-      const ordinal = getOrdinal(day);
       const year = now.getFullYear();
-
-      let hour = now.getHours();
-      const minute = now.getMinutes();
-      const ampm = hour >= 12 ? "pm" : "am";
-      hour = hour % 12;
-      hour = hour ? hour : 12; // 0 should be 12
-
-      const minuteStr = minute < 10 ? "0" + minute : minute;
-
-      // Format: Monday, July 14th 2025 12:57 pm
-      const formatted = `${weekday} ${month} ${day}${ordinal}, ${year} ${hour}:${minuteStr} ${ampm}`;
-      document.getElementById('clock-text').textContent = formatted;
+      const text = `${weekdays[now.getDay()]} ${months[now.getMonth()]} ${day}${getOrdinal(day)}, ${year} ${h}:${m} ${ampm}`;
+      document.getElementById('clock').textContent = text;
     }
-    setInterval(updateClock, 1000);
     updateClock();
+    setInterval(updateClock, 60000);
   </script>
 </body>
 </html>
